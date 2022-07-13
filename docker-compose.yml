@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+  certbot:
+    container_name: nginx-certbot
+    entrypoint: certbot certonly --standalone -m holly.j.mooneyham@gmail.com --agree-tos -d luna-cloud.licham.io
+    image: certbot/certbot
+    ports:
+      - 80:80/tcp
+    volumes:
+      - cert-storage:/etc/letsencrypt
+  nginx:
+    build:
+      context: .
+    container_name: nginx-frontend
+    ports:
+      - 443:443/tcp
+    restart: unless-stopped
+    volumes:
+      - cert-storage:/etc/letsencrypt
+volumes:
+  cert-storage:
