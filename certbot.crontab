@@ -1,0 +1,1 @@
+0 0 * * *	root 	cd /home/nginx/nginx-proxy ; docker-compose run certbot 0</dev/null
