@@ -3,10 +3,10 @@ version: "3.7"
 services:
   certbot:
     container_name: nginx-certbot
-    entrypoint: certbot certonly --standalone -m ${CERT_EMAIL} --agree-tos -d luna-cloud.licham.io
+    entrypoint: certbot certonly --standalone -m ${CERT_EMAIL} --agree-tos -d luna-cloud.licham.io -d download.licham.io
     image: certbot/certbot
     ports:
-      - 80:80/tcp
+      - 0.0.0.0:80:80/tcp
     volumes:
       - cert-storage:/etc/letsencrypt
   nginx:
@@ -18,5 +18,17 @@ services:
     restart: unless-stopped
     volumes:
       - cert-storage:/etc/letsencrypt
+  download:
+    container_name: nginx-download
+    image: nginx:latest
+    volumes:
+      - /mnt/ssd/volumes/nginx-proxy/download:/usr/share/nginx/html:ro
+    restart: unless-stopped
+  ddclient:
+    image: linuxserver/ddclient:latest
+    container_name: "ddclient-omnibus"
+    volumes:
+      - "./ddclient.conf:/config/ddclient.conf"
+    restart: unless-stopped
 volumes:
   cert-storage:
