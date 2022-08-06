@@ -6,7 +6,7 @@ services:
     entrypoint: certbot certonly --standalone -m ${CERT_EMAIL} --agree-tos -d luna-cloud.licham.io -d download.licham.io
     image: certbot/certbot
     ports:
-      - 0.0.0.0:80:80/tcp
+      - 80:80/tcp
     volumes:
       - cert-storage:/etc/letsencrypt
   nginx:
